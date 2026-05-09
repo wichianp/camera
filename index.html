@@ -54,7 +54,7 @@ button{
 
 <br>
 
-<button onclick="startCamera()">
+<button id="startBtn">
 เปิดกล้อง
 </button>
 
@@ -75,29 +75,73 @@ const GAS_URL =
 const video =
 document.getElementById("video");
 
-async function startCamera(){
+  const startBtn = document.getElementById('startBtn');
 
-  try{
-
-    const stream =
-      await navigator
-      .mediaDevices
-      .getUserMedia({
-        video:{
-          facingMode:"environment"
-        },
-        audio:false
-      });
-
-    video.srcObject = stream;
-
-  }catch(err){
-
-    alert(err);
-
+  // แก้ไขฟังก์ชันเปิดกล้องให้ "เคลียร์" สิทธิ์เก่าก่อน
+startBtn.onclick = async () => {
+  status.innerText = "กำลังตรวจสอบสิทธิ์...";
+  
+  // ตรวจสอบว่า Browser รองรับหรือไม่
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    status.innerText = "Browser นี้ไม่รองรับการเข้าถึงกล้อง";
+    return;
   }
 
-}
+  try {
+    // บังคับหยุด Stream เดิมถ้ามี
+    if (video.srcObject) {
+      video.srcObject.getTracks().forEach(track => track.stop());
+    }
+
+    const constraints = { 
+      video: { 
+        width: { ideal: 1280 },
+        height: { ideal: 720 },
+        facingMode: "user" 
+      } 
+    };
+
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    video.srcObject = stream;
+    video.onloadedmetadata = () => {
+        video.play();
+        startBtn.disabled = true;
+        snapBtn.disabled = false;
+        status.innerText = "เชื่อมต่อกล้องสำเร็จ!";
+    };
+  } catch (err) {
+    console.error("Detailed Error:", err);
+    // ถ้าเจอ Permission denied ทั้งที่ Allow แล้ว อาจเป็นเพราะมีแอปอื่นใช้กล้องอยู่
+    status.innerText = "Error: " + err.name + " - " + err.message;
+    if(err.name === 'NotReadableError' || err.name === 'TrackStartError') {
+       status.innerText = "ผิดพลาด: กล้องถูกใช้งานโดยโปรแกรมอื่นอยู่ (เช่น Zoom หรือ Line)";
+    }
+  }
+};
+
+// async function startCamera(){
+
+//   try{
+
+//     const stream =
+//       await navigator
+//       .mediaDevices
+//       .getUserMedia({
+//         video:{
+//           facingMode:"environment"
+//         },
+//         audio:false
+//       });
+
+//     video.srcObject = stream;
+
+//   }catch(err){
+
+//     alert(err);
+
+//   }
+
+// }
 
 async function capture(){
 
