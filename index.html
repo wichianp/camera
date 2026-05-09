@@ -58,7 +58,7 @@ button{
 เปิดกล้อง
 </button>
 
-<button onclick="capture()">
+<button id="snapBtn" onclick="capture()">
 ถ่ายรูป
 </button>
 
@@ -78,6 +78,7 @@ const GAS_URL =
   const startBtn = document.getElementById('startBtn');
   const status = document.getElementById('status');
   const canvas = document.getElementById('canvas');
+  const snapBtn = document.getElementById('snapBtn');
 
   // แก้ไขฟังก์ชันเปิดกล้องให้ "เคลียร์" สิทธิ์เก่าก่อน
 startBtn.onclick = async () => {
