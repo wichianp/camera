@@ -120,36 +120,9 @@ startBtn.onclick = async () => {
   }
 };
 
-// async function startCamera(){
-
-//   try{
-
-//     const stream =
-//       await navigator
-//       .mediaDevices
-//       .getUserMedia({
-//         video:{
-//           facingMode:"environment"
-//         },
-//         audio:false
-//       });
-
-//     video.srcObject = stream;
-
-//   }catch(err){
-
-//     alert(err);
-
-//   }
-
-// }
-
 async function capture(){
 
-  // const canvas =
-  //   document.getElementById("canvas");
-  const name =
-    document.getElementById("name").value;
+  const name = document.getElementById("name").value;
   if(!name){
     status.innerText = "กรอกชื่อก่อน!";
     return;
@@ -197,9 +170,9 @@ async function capture(){
     await res.json();
 
   console.log(data);
-
+  status.innerText = "";
   alert("บันทึกสำเร็จ");
-
+  
 }
 
 </script>
