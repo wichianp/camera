@@ -72,18 +72,20 @@ button{
 const GAS_URL =
 "https://script.google.com/macros/s/AKfycbz7_Oc6a35d_DRIjmuO6iZF3_h2ZN5pgumhdQpmNiBg7AMjaphiqzayU3uEJ8tY_htX/exec";
 
-const video =
-document.getElementById("video");
   
-  const status = document.getElementById('status');
   const nameInput = document.getElementById('name');
+  const video = document.getElementById('video');
   const startBtn = document.getElementById('startBtn');
+  const snapBtn = document.getElementById('snapBtn');
+  const status = document.getElementById('status');
+  const canvas = document.getElementById('canvas');
 
   // แก้ไขฟังก์ชันเปิดกล้องให้ "เคลียร์" สิทธิ์เก่าก่อน
 startBtn.onclick = async () => {
   status.innerText = "กำลังตรวจสอบสิทธิ์...";
   if(!nameInput){
     status.innerText = "กรอกชื่อก่อน!";
+    return;
   }
   
   // ตรวจสอบว่า Browser รองรับหรือไม่
