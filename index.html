@@ -38,7 +38,7 @@ button{
 <body>
 
 <h2>Camera Capture</h2>
-
+<p id="status"></p>
 <input
   type="text"
   id="name"
@@ -74,12 +74,17 @@ const GAS_URL =
 
 const video =
 document.getElementById("video");
-
+  
+  const status = document.getElementById('status');
+  const nameInput = document.getElementById('name');
   const startBtn = document.getElementById('startBtn');
 
   // แก้ไขฟังก์ชันเปิดกล้องให้ "เคลียร์" สิทธิ์เก่าก่อน
 startBtn.onclick = async () => {
   status.innerText = "กำลังตรวจสอบสิทธิ์...";
+  if(!nameInput){
+    status.innerText = "กรอกชื่อก่อน!";
+  }
   
   // ตรวจสอบว่า Browser รองรับหรือไม่
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
