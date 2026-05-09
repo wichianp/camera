@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+<title>Camera App</title>
+
+<style>
+
+body{
+  font-family:sans-serif;
+  text-align:center;
+  padding:20px;
+}
+
+video,canvas{
+  width:100%;
+  max-width:400px;
+  border-radius:10px;
+}
+
+button{
+  padding:12px 20px;
+  margin:10px;
+  font-size:18px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Camera Capture</h2>
+
+<input
+  type="text"
+  id="name"
+  placeholder="ชื่อ">
+
+<br><br>
+
+<video
+  id="video"
+  autoplay
+  playsinline>
+</video>
+
+<br>
+
+<button onclick="startCamera()">
+เปิดกล้อง
+</button>
+
+<button onclick="capture()">
+ถ่ายรูป
+</button>
+
+<canvas
+  id="canvas"
+  style="display:none;">
+</canvas>
+
+<script>
+
+const GAS_URL =
+"https://script.google.com/macros/s/AKfycbz7_Oc6a35d_DRIjmuO6iZF3_h2ZN5pgumhdQpmNiBg7AMjaphiqzayU3uEJ8tY_htX/exec";
+
+const video =
+document.getElementById("video");
+
+async function startCamera(){
+
+  try{
+
+    const stream =
+      await navigator
+      .mediaDevices
+      .getUserMedia({
+        video:{
+          facingMode:"environment"
+        },
+        audio:false
+      });
+
+    video.srcObject = stream;
+
+  }catch(err){
+
+    alert(err);
+
+  }
+
+}
+
+async function capture(){
+
+  const canvas =
+    document.getElementById("canvas");
+
+  canvas.width =
+    video.videoWidth;
+
+  canvas.height =
+    video.videoHeight;
+
+  const ctx =
+    canvas.getContext("2d");
+
+  ctx.drawImage(
+    video,
+    0,
+    0
+  );
+
+  const image =
+    canvas.toDataURL("image/png");
+
+  const name =
+    document.getElementById("name").value;
+
+  //-----------------------------------
+  // SEND TO GAS
+  //-----------------------------------
+
+  const res =
+    await fetch(GAS_URL,{
+
+      method:"POST",
+
+      body:JSON.stringify({
+        name:name,
+        image:image
+      })
+
+    });
+
+  const data =
+    await res.json();
+
+  console.log(data);
+
+  alert("บันทึกสำเร็จ");
+
+}
+
+</script>
+
+</body>
+</html>
