@@ -121,7 +121,7 @@ startBtn.onclick = async () => {
 };
 
 async function capture(){
-
+  video.pause();
   const name = document.getElementById("name").value;
   if(!name){
     status.innerText = "กรอกชื่อก่อน!";
@@ -173,6 +173,7 @@ async function capture(){
   status.innerText = "";
   document.getElementById("name").value = "";
   alert("บันทึกสำเร็จ");
+  video.play();
   
 }
 
