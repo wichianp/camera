@@ -72,7 +72,6 @@ button{
 const GAS_URL =
 "https://script.google.com/macros/s/AKfycbz7_Oc6a35d_DRIjmuO6iZF3_h2ZN5pgumhdQpmNiBg7AMjaphiqzayU3uEJ8tY_htX/exec";
 
-  
   const nameInput = document.getElementById('name').value;
   const video = document.getElementById('video');
   const startBtn = document.getElementById('startBtn');
@@ -154,7 +153,9 @@ async function capture(){
 
   // const canvas =
   //   document.getElementById("canvas");
-  if(!nameInput){
+  const name =
+    document.getElementById("name").value;
+  if(!name){
     status.innerText = "กรอกชื่อก่อน!";
     return;
   }
@@ -177,8 +178,7 @@ async function capture(){
   const image =
     canvas.toDataURL("image/png");
 
-  const name =
-    document.getElementById("name").value;
+  
 
   //-----------------------------------
   // SEND TO GAS
